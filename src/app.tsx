@@ -15,7 +15,7 @@ export const App = () => {
       </main>
     );
   }
-  if (isLoading) {
+  if (isLoading && status === "pending") {
     return (
       <main className="main-contener">
         <h1 className="loading">Loading...</h1>

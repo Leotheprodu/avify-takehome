@@ -21,7 +21,6 @@ const mockData = {
 render(<EnergyChart data={mockData} />);
 
 test("renders EnergyChart and check items exist", () => {
-  // Busca un elemento por su rol
   const biomassElement = screen.getByText("biomass");
   const coalElement = screen.getByText("coal");
   const importsElement = screen.getByText("imports");
@@ -31,7 +30,6 @@ test("renders EnergyChart and check items exist", () => {
   const solarElement = screen.getByText("solar");
   const windElement = screen.getByText("wind");
 
-  /* const otherElement = screen.getByText("other"); */
   expect(biomassElement).not.toBeNull();
   expect(coalElement).not.toBeNull();
   expect(importsElement).not.toBeNull();

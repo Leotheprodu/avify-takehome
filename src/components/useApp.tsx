@@ -3,7 +3,7 @@ import { fetchAPI } from "../utils/fetchAPI";
 import { EnergyData } from "../types";
 
 export const useApp = () => {
-  const { status, data, isLoading } = useQuery({
+  const { status, data, isLoading, refetch } = useQuery({
     queryKey: ["data"],
     queryFn: async () =>
       await fetchAPI({
@@ -11,10 +11,15 @@ export const useApp = () => {
       }),
     retry: 2,
   });
+  const handleUpdateData = (e: any) => {
+    e.preventDefault();
+    refetch();
+  };
 
   return {
     data: data as EnergyData | undefined,
     status,
     isLoading,
+    handleUpdateData,
   };
 };
