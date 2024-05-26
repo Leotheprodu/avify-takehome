@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable no-undef */
-
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 const host = "localhost";
 const port = 8080;
@@ -18,7 +17,7 @@ module.exports = {
   output: {
     filename: "[name]-[contenthash:6].bundle.js",
     path: path.join(__dirname, "./build/"),
-    publicPath: `http://${host}:${port}/`,
+    publicPath: "",
   },
   resolve: {
     mainFields: ["browser", "module", "main"],
@@ -29,11 +28,16 @@ module.exports = {
       {
         test: /\.([jt])s(x?)$/,
         exclude: /node_modules/,
-        use: "babel-loader",
-      },
-      {
-        test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, "css-loader"],
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: [
+              "@babel/preset-env",
+              "@babel/preset-react",
+              "@babel/preset-typescript",
+            ],
+          },
+        },
       },
       {
         test: /\.(png|jpg|gif)$/,
@@ -46,14 +50,15 @@ module.exports = {
       filename: "index.html",
       template: "index.html",
     }),
-    new MiniCssExtractPlugin({
-      filename: "[name]-[contenthash:6].css",
-      chunkFilename: "[id].css",
+    new CopyWebpackPlugin({
+      patterns: [{ from: "styles.css", to: "styles.css" }],
     }),
   ],
   devServer: {
     port,
     host,
-    static: path.resolve(__dirname, "src"),
+    static: path.join(__dirname, "src"),
+    hot: true,
+    historyApiFallback: true,
   },
 };
